@@ -1,0 +1,101 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+  width="100%" height="100%" viewBox="0 0 1024 768"
+  style="fill: none; stroke-width: 3; font-family: Helvetica;
+ font: Helvetica;
+">
+
+<!-- Creator: NGspice -->
+
+<rect x="0" y="0" width="1024" height="768" fill="white" stroke="none"/>
+<text stroke="none" fill="black" font-size="16" x="358" y="752">
+v-sweep
+</text>
+<text stroke="none" fill="black" font-size="16" x="10" y="16">
+dc1: PMOS_Transfer_Characteristic_65nm_U24ec025
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M50 704l0 -640"/>
+<text stroke="none" fill="black" font-size="16" x="25" y="728">
+-1.20
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M182 704l0 -640"/>
+<text stroke="none" fill="black" font-size="16" x="157" y="728">
+-1.10
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M314 704l0 -640"/>
+<text stroke="none" fill="black" font-size="16" x="289" y="728">
+-1.00
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M446 704l0 -640"/>
+<text stroke="none" fill="black" font-size="16" x="421" y="728">
+-0.90
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M578 704l0 -640"/>
+<text stroke="none" fill="black" font-size="16" x="553" y="728">
+-0.80
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M710 704l0 -640"/>
+<text stroke="none" fill="black" font-size="16" x="685" y="728">
+-0.70
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M842 704l0 -640"/>
+<text stroke="none" fill="black" font-size="16" x="817" y="728">
+-0.60
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M974 704l0 -640"/>
+<text stroke="none" fill="black" font-size="16" x="949" y="728">
+-0.50
+</text>
+<text stroke="none" fill="black" font-size="16" x="614" y="752">
+V
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M50 704l924 0"/>
+<text stroke="none" fill="black" font-size="16" x="8" y="712">
+-3.5
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M50 624l924 0"/>
+<text stroke="none" fill="black" font-size="16" x="8" y="632">
+-3.0
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M50 544l924 0"/>
+<text stroke="none" fill="black" font-size="16" x="8" y="552">
+-2.5
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M50 464l924 0"/>
+<text stroke="none" fill="black" font-size="16" x="8" y="472">
+-2.0
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M50 384l924 0"/>
+<text stroke="none" fill="black" font-size="16" x="8" y="392">
+-1.5
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M50 304l924 0"/>
+<text stroke="none" fill="black" font-size="16" x="8" y="312">
+-1.0
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M50 224l924 0"/>
+<text stroke="none" fill="black" font-size="16" x="8" y="232">
+-0.5
+</text>
+<path stroke="black" stroke-width="3" d="M50 144l924 0"/>
+<text stroke="none" fill="black" font-size="16" x="18" y="152">
+0.0
+</text>
+<path stroke="black" stroke-width="3" stroke-dasharray="1,2" d="M50 64l924 0"/>
+<text stroke="none" fill="black" font-size="16" x="18" y="72">
+0.5
+</text>
+<text stroke="none" fill="black" font-size="16" x="10" y="32">
+nA
+</text>
+<path stroke="red" d="M462 23l46 0"/>
+<text stroke="none" fill="black" font-size="16" x="518" y="32">
+-i(vgs)
+</text>
+<path stroke="red" d="M974 156l-26 2 -27 2 -26 2 -27 2 -26 3 -26 3 -27 3 -26 3 -27 4 -26 4 -26 5 -27 5 -26 6 -27 6 -26 7 -26 8 -27 8 -26 9 -27 10 -26 11 -26 12 -27 13 -26 15 -27 15 -26 18 -26 19 -27 21 -26 23 -27 25 -26 29 -26 31 -27 36 -26 39"/>
+<path stroke="red" d="M103 555l-27 45 -26 50M974 150l-26 1 -27 1 -26 1 -27 1 -26 1 -26 2 -27 1 -26 2 -27 2 -26 2 -26 3 -27 2 -26 3 -27 4 -26 3 -26 4 -27 4 -26 5 -27 6 -26 5 -26 7 -27 7 -26 8 -27 9 -26 11 -26 12 -27 13 -26 15 -27 18 -26 21 -26 24"/>
+<path stroke="red" d="M156 348l-27 28 -26 33 -27 39 -26 46M974 130l-26 3 -27 3 -26 2 -27 3 -26 3 -26 3 -27 3 -26 2 -27 3 -26 3 -26 3 -27 4 -26 3 -27 4 -26 4 -26 4 -27 5 -26 5 -27 6 -26 7 -26 7 -27 8 -26 10 -27 11 -26 12 -26 15 -27 17 -26 21 -27 25"/>
+<path stroke="red" d="M208 329l-26 29 -26 35 -27 42 -26 50 -27 60 -26 73"/>
+</svg>

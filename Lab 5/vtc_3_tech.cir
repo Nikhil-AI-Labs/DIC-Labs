@@ -1,0 +1,29 @@
+// Aim  : Plot transfer characteristic of inverter NMOS
+
+.title NMOS_inverter_with_active_load_Transfer_Characteristic_65nm_U24EC025
+.include cmos_65nm.txt
+.include cmos_90nm.txt
+.include cmos_130nm.txt
+
+m1 d_out65 g 0 0 nmos w=200nm l= 65nm
+m2 Vdd g d_out65 Vdd pmos w=500nm l= 65nm
+
+m3 d_out90 g 0 0 nmos w=200nm l= 90nm
+m4 Vdd g d_out90 Vdd pmos w=700nm l= 90nm
+
+m5 d_out130 g 0 0 nmos w=200nm l= 130nm
+m6 Vdd g d_out130 Vdd pmos w=800nm l= 130nm
+
+vgs g 0 1.2
+VDD vdd 0 1.2
+.dc vgs 0 1.2 0.02
+
+.control
+set color0 = white
+set color1 = black
+set xbrushwidth = 3
+set hcopydevtype = svg
+run
+plot v(d_out65) v(g) v(d_out90) v(g) v(d_out130) v(g) xlabel 'Transfer Characteristic for CMOS 3 Techologies'
+.endc
+.end

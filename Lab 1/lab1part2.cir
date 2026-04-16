@@ -1,0 +1,24 @@
+Pulse_voltage_source_U24EC025
+
+vin in 0 PULSE(0 1.8 200ps 100ps 100ps 300ps 800ps)
+
+c1 out 0 100f
+*capacitor is connected between out and 0(gound)
+r1 in out 2k
+*resistor is connected between in and out
+
+.tran 0.5ns 3.5ns
+*.tran 20ps 800ps
+.control
+set hcopydevtype=svg
+set color0 = white
+set color1 = black
+set xbrushwidth = 3
+run 
+plot v(in)
+plot v(out)
+plot v(in, out)
+plot v(out) v(in) v(in, out)
+hardcopy out\pwl_vsource1.svg v(in) v(out) v(in, out)
+.endc
+.end

@@ -1,0 +1,38 @@
+// Aim  : CMOS MUX 2x1
+
+.title CMOS_MUX_65nm_U24EC025
+.include cmos_65nm.txt
+
+* --- Inverter (Generates S_bar) ---
+* drain gate source bulk model
+m5 inv_S S Vdd Vdd pmos w=400nm l=65nm
+m6 inv_S S 0   0   nmos w=100nm l=65nm
+
+* --- Transmission Gate for Input B (Passes when S=0) ---
+m1 B inv_S  Vout Vdd pmos w=400nm l=65nm  ; PMOS gets S (on when 0)
+m2 B S      Vout 0   nmos w=100nm l=65nm  ; NMOS gets inv_S (on when 0)
+
+* --- Transmission Gate for Input A (Passes when S=1) ---
+m3 A S  Vout Vdd pmos w=400nm l=65nm  ; PMOS gets inv_S (on when 1)
+m4 A inv_S     Vout 0   nmos w=100nm l=65nm  ; NMOS gets S (on when 1)
+ 
+* --- Power and Sources ---
+VDD Vdd 0 1.2
+V_S S 0 PULSE(0 1.2 0ns 0.1us 0.1us 40us 80us)
+V_A A 0 PULSE(0 1.2 0ns 0.1us 0.1us 20us 40us)
+V_B B 0 PULSE(0 1.2 0ns 0.1us 0.1us 5us 10us)
+.tran 1ns 100us
+
+.control
+set color0 = white
+set color1 = black
+set xbrushwidth = 3
+
+
+run
+let A_shifted=V(A) + 6
+let B_shifted=V(B) + 4
+let S_shifted=V(S) + 2
+plot v(Vout) A_shifted B_shifted S_shifted
+.endc
+.end

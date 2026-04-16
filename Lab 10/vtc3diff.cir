@@ -1,0 +1,50 @@
+.title 3_Input_Nand_Refined_Timing_65nm
+.include cmos_65nm.txt
+
+* --- 2-Input NOR Netlist ---
+m1 vout vinA v1 0 nmos w=100u l=65nm
+m2 v1 vinB v2 0 nmos w=100u l=65nm
+m3 v2 vinc 0 0 nmos w=100u l=65nm
+
+m4 vout vinA vdd vdd pmos w=400u l=65nm
+m5 vout  vinB vdd vdd pmos w=400u l=65nm
+m6 vout  vinc vdd vdd pmos w=400u l=65nm
+
+Cload vout 0 10f
+
+* --- Sources ---
+VDD vdd 0 1.2
+
+* Staggered pulses so we can see all 4 logic states (00, 01, 10, 11)
+* Format: PULSE(Vlow Vhigh Tdelay Trise Tfall Twidth Tperiod)
+va vinA 0 PULSE(0 1.2 0ns 0.1ns 0.1ns 10ns 20ns)
+vb vinB 0 PULSE(0 1.2 0ns 0.1ns 0.1ns 20ns 40ns)
+vc vinc 0 PULSE(0 1.2 0ns 0.1ns 0.1ns 30ns 60ns)
+
+.tran 0.01ns 200ns
+
+.control
+run
+
+* --- Propagation Delay Measurements ---
+* Capturing the transition where the gate actually switches
+meas tran tphl TRIG v(vinA) val=0.6 rise=1 TARG v(vout) val=0.6 fall=1
+meas tran tplh TRIG v(vinA) val=0.6 fall=2 TARG v(vout) val=0.6 rise=1
+
+let tpd = (tphl + tplh) / 2
+print tphl tplh tpd
+
+* --- Enhanced Visualization ---
+* We create "offset" vectors to stack the graphs vertically
+let out_plot = v(vout) 
+let A_plot   = v(vinA) + 1.5
+let B_plot   = v(vinB) + 3
+let C_plot   = v(vinC) + 4.5
+
+set color0 = white
+set color1 = black
+set xbrushwidth = 2
+
+plot out_plot A_plot B_plot C_plot
+.endc
+.end

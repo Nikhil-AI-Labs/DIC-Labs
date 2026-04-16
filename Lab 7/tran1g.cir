@@ -1,0 +1,44 @@
+// Aim  : Plot transfer characteristic of inverter NMOS
+
+.title NMOS_inverter_Transient_Characteristic_65nm_U24EC025
+.include cmos_65nm.txt
+
+.param variable = 1.2
+
+m1 d_out g 0 0 nmos w=200nm l= 65nm
+m2 Vdd g d_out Vdd pmos w=500nm l= 65nm
+VDD vdd 0 variable
+
+vgs g 0 PULSE(0 variable 0.4ns 0.1ns 0.1ns 0.4ns 1ns)
+.tran 0.01ns 2ns
+
+.control
+set color0 = white
+set color1 = black
+set xbrushwidth = 3
+set hcopydevtype = svg
+run
+plot v(d_out) v(g) xlabel 'Transient analysis 1GHz'
+
+* --- MEASUREMENT SECTION ---
+* 1. Define 10% and 90% points
+let vmin = 0
+let vmax = 1.2
+let v10 = 0.1 * (vmax - vmin)
+let v90 = 0.9 * (vmax - vmin)
+
+* 2. Measure Rise Time (10% to 90% of the 1st rising edge)
+meas tran rise_time TRIG v(d_out) VAL=v10 RISE=1 TARG v(d_out) VAL=v90 RISE=1
+
+* 3. Measure Fall Time (90% to 10% of the 1st falling edge)
+meas tran fall_time TRIG v(d_out) VAL=v90 FALL=1 TARG v(d_out) VAL=v10 FALL=1
+
+* Measure TPHL: High-to-Low transition (Output)
+meas tran tphl TRIG v(g) VAL=0.6 RISE=1 TARG v(d_out) VAL=0.6 FALL=1
+
+* Measure TPLH: Low-to-High transition (Output)
+meas tran tplh TRIG v(g) VAL=0.6 FALL=1 TARG v(d_out) VAL=0.6 RISE=1
+
+
+.endc
+.end

@@ -1,0 +1,34 @@
+// Aim  : Plot transfer characteristic of inverter NMOS
+
+.title NMOS_inverter_Transfer_Characteristic_65nm_U24EC025
+.include cmos_65nm.txt
+m1 d_out g 0 0 pmos w=100nm l= 65nm
+
+*supply
+VDD vdd 0 -1.2
+
+*3 load resistor (one active at a time)
+r10k vdd d_out10k 10k
+r100k vdd d_out100k 100k
+r1M vdd d_out1M 1meg
+
+*NMOS connected to all outputs
+m10k d_out10k g 0 0 pmos w=100nm l= 65nm
+m100k d_out100k g 0 0 pmos w=100nm l= 65nm
+m1M d_out1M g 0 0 pmos w=100nm l= 65nm
+
+*input
+vgs g 0 -1.2
+
+.dc vgs -1.2 0 0.02
+
+.control
+set color0 = white
+set color1 = black
+set xbrushwidth = 3
+set hcopydevtype = svg
+run
+plot v(d_out10k) v(d_out100k) v(d_out1M) vs v(g) v(g)
+hardcopy output\PMOS_Inverter_Transfer_Characteristics_65nm.svg v(d_out) v(g) xlabel 'vin' ylabel 'vout'
+.endc
+.end

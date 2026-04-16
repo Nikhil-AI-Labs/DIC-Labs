@@ -1,0 +1,23 @@
+// Aim  : Plot transfer characteristic of inverter PMOS
+
+.title PMOS_inverter_Transfer_Characteristic_65nm_U24EC025
+.include cmos_65nm.txt
+
+m1 d_out100k g 0 0 pmos w=100nm l= 65nm
+vgs g 0 -1.2
+VDD vdd 0 -1.2
+r1 d_out100k vdd 100k
+
+.dc vgs 0 -1.2 -0.01
+
+.control
+
+set color0 = white
+set color1 = black
+set xbrushwidth = 3
+set hcopydevtype = svg
+run
+plot v(d_out100k) v(g)
+hardcopy output\PMOS_Inverter_Transfer_Characteristics_65nm.svg v(d_out100k) v(g)
+.endc
+.end

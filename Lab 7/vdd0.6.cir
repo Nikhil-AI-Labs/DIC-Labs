@@ -1,0 +1,46 @@
+// Aim  : Plot transfer characteristic of inverter NMOS with varying vdd
+
+.title NMOS_inverter_Transfer_Characteristic_65nm_U24EC025
+.include cmos_65nm.txt
+
+m1 d_out g 0 0 nmos w=200nm l= 65nm
+m2 Vdd g d_out Vdd pmos w=500nm l= 65nm
+vgs g 0 0.6
+VDD vdd 0 0.6
+
+.dc vgs 0 0.6 0.02
+
+.control
+set color0 = white
+set color1 = black
+set xbrushwidth = 3
+set hcopydevtype = svg
+run
+plot v(d_out) v(g) xlabel 'Transfer Characteristic for CMOS 65nm for 0.6 VDD'
+
+* 1. Calculate the derivative (slope) of Vout vs Vin
+let derivative = deriv(v(d_out))
+
+* 2. Find VIL: The first point where slope = -1
+meas dc vil when derivative=-1 cross=1
+
+* 3. Find VIH: The last point where slope = -1
+meas dc vih when derivative=-1 cross=last
+
+* 4. Define VOH and VOL (Assuming rail-to-rail)
+let voh = 0.6
+let vol = 0
+
+* 5. Calculate Margins
+let nml = vil - vol
+let nmh = voh - vih
+
+echo "--------------------------------------"
+echo "CMOS Inverter Noise Margin Results:"
+echo "VIL = $&vil V"
+echo "VIH = $&vih V"
+echo "NM_Low  (VIL - VOL) = $&nml V"
+echo "NM_High (VOH - VIH) = $&nmh V"
+echo "--------------------------------------"
+.endc
+.end
