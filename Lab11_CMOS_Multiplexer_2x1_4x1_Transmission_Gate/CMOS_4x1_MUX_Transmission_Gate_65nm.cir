@@ -1,0 +1,50 @@
+.title 4X1_mux
+.include cmos_65nm.txt
+
+m13 Sel_bar0 Sel0 0 0 nmos w=100u l=65nm
+m15 Sel_bar0 Sel0 vdd vdd pmos w=250u l=65nm
+m14 Sel_bar1 Sel1 0 0 nmos w=100u l=65nm
+m16 Sel_bar1 Sel1 vdd vdd pmos w=250u l=65nm
+
+m1 I0 Sel0 A vdd pmos w=250u l=65nm
+m2 I0 Sel_bar0 A 0 nmos w=100u l=65nm
+
+m3 I1 Sel_bar0 A vdd pmos w=250u l=65nm
+m4 I1 Sel0 A 0 nmos w=100u l=65nm
+
+m5 I2 Sel0 C vdd pmos w=250u l=65nm
+m6 I2 Sel_bar0 C 0 nmos w=100u l=65nm
+
+m7 I3 Sel_bar0 C vdd pmos w=250u l=65nm
+m8 I3 Sel0 C 0 nmos w=100u l=65nm
+
+m9 A Sel1 Vout vdd pmos w=250u l=65nm
+m10 A Sel_bar1 Vout 0 nmos w=100u l=65nm
+
+m11 C Sel_bar1 Vout vdd pmos w=250u l=65nm
+m12 C Sel1 Vout 0 nmos w=100u l=65nm
+
+vdd vdd 0 1.2 
+vSel0 Sel0 0 PULSE(0v 1.2v 0us 0.01us 0.01us 60us 120us)
+vSel1 Sel1 0 PULSE(0v 1.2v 0us 0.01us 0.01us 120us 240us)
+vI0 I0 0 PULSE(0v 1.2v 0us 0.01us 0.01us 5us 10us)
+vI1 I1 0 PULSE(0v 1.2v 0us 0.01us 0.01us 10us 20us)
+vI2 I2 0 PULSE(0v 1.2v 0us 0.01us 0.01us 20us 40us)
+vI3 I3 0 PULSE(0v 1.2v 0us 0.01us 0.01us 30us 60us)
+
+.tran 1us 300us
+.control
+set color0 = white 
+set color1 = black
+set x brushwidth = 1
+run
+let S0_plot = v(Sel0)
+let S1_plot = v(Sel1) +1.5
+let I0_plot = v(I0) + 3
+let I1_plot = v(I1) + 4.5
+let I2_plot = v(I2) + 6
+let I3_plot = v(I3) + 7.5
+let Vout_plot = v(Vout) + 9
+plot Vout_plot S0_plot S1_plot I0_plot I1_plot I2_plot I3_plot
+.endc 
+.end

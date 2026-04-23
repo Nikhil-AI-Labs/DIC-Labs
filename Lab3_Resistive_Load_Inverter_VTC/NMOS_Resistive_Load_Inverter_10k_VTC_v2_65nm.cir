@@ -9,7 +9,7 @@ VDD vdd 0 1.2
 r1 vdd d_out10k 10k
 
 .dc vgs 0 1.2 0.01
-.tran 20ps 800ps
+*.tran 20ps 800ps
 
 .control
 set color0 = white
