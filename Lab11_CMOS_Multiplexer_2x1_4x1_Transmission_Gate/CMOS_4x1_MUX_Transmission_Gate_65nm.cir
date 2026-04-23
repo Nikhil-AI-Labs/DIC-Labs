@@ -1,50 +1,67 @@
-.title 4X1_mux
+// Aim  : CMOS MUX 4x1
+
+.title CMOS_MUX_65nm_U24EC025
 .include cmos_65nm.txt
 
-m13 Sel_bar0 Sel0 0 0 nmos w=100u l=65nm
-m15 Sel_bar0 Sel0 vdd vdd pmos w=250u l=65nm
-m14 Sel_bar1 Sel1 0 0 nmos w=100u l=65nm
-m16 Sel_bar1 Sel1 vdd vdd pmos w=250u l=65nm
+* --- Inverter (Generates S_bar) ---
+* drain gate source bulk model
+m5 inv_S0 S0 Vdd Vdd pmos w=400nm l=65nm
+m6 inv_S0 S0 0   0   nmos w=100nm l=65nm
+m7 inv_S1 S1 Vdd Vdd pmos w=400nm l=65nm
+m8 inv_S1 S1 0   0   nmos w=100nm l=65nm
 
-m1 I0 Sel0 A vdd pmos w=250u l=65nm
-m2 I0 Sel_bar0 A 0 nmos w=100u l=65nm
+* ---1st Transmission Gate for Input A (Passes when S0=0) ---
+m1 A inv_S0  Vout_AB Vdd pmos w=400nm l=65nm  ; PMOS gets S (on when 0)
+m2 A S0      Vout_AB 0   nmos w=100nm l=65nm  ; NMOS gets inv_S (on when 0)
+* ---2nd Transmission Gate for Input A (Passes when S1=0) ---
+m3 Vout_AB inv_S1  Vout Vdd pmos w=400nm l=65nm  ; PMOS gets S1 (on when 0)
+m4 Vout_AB S1      Vout 0   nmos w=100nm l=65nm  ; NMOS gets inv_S1 (on when 0)
 
-m3 I1 Sel_bar0 A vdd pmos w=250u l=65nm
-m4 I1 Sel0 A 0 nmos w=100u l=65nm
+* ---1st Transmission Gate for Input B (Passes when S0=1) ---
+m9 B S0      Vout_AB Vdd pmos w=400nm l=65nm  ; PMOS gets S (on when 1)
+m10 B inv_S0  Vout_AB 0   nmos w=100nm l=65nm  ; NMOS gets inv_S (on when 1)
+* ---2nd Transmission Gate for Input B (Passes when S1=0) ---
+m11 Vout_AB inv_S1  Vout Vdd pmos w=400nm l=65nm  ; PMOS gets S1 (on when 0)
+m12 Vout_AB S1      Vout 0   nmos w=100nm l=65nm  ; NMOS gets inv_S1 (on when 0)
 
-m5 I2 Sel0 C vdd pmos w=250u l=65nm
-m6 I2 Sel_bar0 C 0 nmos w=100u l=65nm
+* ---1st Transmission Gate for Input C (Passes when S0=0) ---
+m13 C inv_S0  Vout_CD Vdd pmos w=400nm l=65nm  ; PMOS gets S (on when 0)
+m14 C S0      Vout_CD 0   nmos w=100nm l=65nm  ; NMOS gets inv_S (on when 0)
+* ---2nd Transmission Gate for Input A (Passes when S1=0) ---
+m15 Vout_CD S1      Vout Vdd pmos w=400nm l=65nm  ; PMOS gets S1 (on when 1)
+m16 Vout_CD inv_S1  Vout 0   nmos w=100nm l=65nm  ; NMOS gets inv_S1 (on when 1)
 
-m7 I3 Sel_bar0 C vdd pmos w=250u l=65nm
-m8 I3 Sel0 C 0 nmos w=100u l=65nm
+* ---1st Transmission Gate for Input A (Passes when S0=0) ---
+m17 D S0          Vout_CD Vdd pmos w=400nm l=65nm  ; PMOS gets S (on when 1)
+m18 D inv_S0      Vout_CD 0   nmos w=100nm l=65nm  ; NMOS gets inv_S (on when 1)
+* ---2nd Transmission Gate for Input A (Passes when S1=0) ---
+m19 Vout_CD S1      Vout Vdd pmos w=400nm l=65nm  ; PMOS gets S1 (on when 1)
+m20 Vout_CD inv_S1  Vout 0   nmos w=100nm l=65nm  ; NMOS gets inv_S1 (on when 1)
 
-m9 A Sel1 Vout vdd pmos w=250u l=65nm
-m10 A Sel_bar1 Vout 0 nmos w=100u l=65nm
+ 
+* --- Power and Sources ---
+VDD Vdd 0 1.2
+V_S1 S1 0 PULSE(0 1.2 0ns 0.1us 0.1us 40us 80us)
+V_S0 S0 0 PULSE(0 1.2 0ns 0.1us 0.1us 20us 40us)
+V_A A 0 PULSE(0 1.2 0ns 0.1us 0.1us 10us 20us)
+V_B B 0 PULSE(0 1.2 0ns 0.1us 0.1us 5us 10us)
+V_C C 0 PULSE(0 1.2 0ns 0.1us 0.1us 2.5us 5us)
+V_D D 0 PULSE(0 1.2 0ns 0.1us 0.1us 1.25us 2.5us)
+.tran 1ns 100us
 
-m11 C Sel_bar1 Vout vdd pmos w=250u l=65nm
-m12 C Sel1 Vout 0 nmos w=100u l=65nm
-
-vdd vdd 0 1.2 
-vSel0 Sel0 0 PULSE(0v 1.2v 0us 0.01us 0.01us 60us 120us)
-vSel1 Sel1 0 PULSE(0v 1.2v 0us 0.01us 0.01us 120us 240us)
-vI0 I0 0 PULSE(0v 1.2v 0us 0.01us 0.01us 5us 10us)
-vI1 I1 0 PULSE(0v 1.2v 0us 0.01us 0.01us 10us 20us)
-vI2 I2 0 PULSE(0v 1.2v 0us 0.01us 0.01us 20us 40us)
-vI3 I3 0 PULSE(0v 1.2v 0us 0.01us 0.01us 30us 60us)
-
-.tran 1us 300us
 .control
-set color0 = white 
+set color0 = white
 set color1 = black
-set x brushwidth = 1
+set xbrushwidth = 3
+
+
 run
-let S0_plot = v(Sel0)
-let S1_plot = v(Sel1) +1.5
-let I0_plot = v(I0) + 3
-let I1_plot = v(I1) + 4.5
-let I2_plot = v(I2) + 6
-let I3_plot = v(I3) + 7.5
-let Vout_plot = v(Vout) + 9
-plot Vout_plot S0_plot S1_plot I0_plot I1_plot I2_plot I3_plot
-.endc 
+let A_shifted=V(A) + 12
+let B_shifted=V(B) + 10
+let C_shifted=V(C) + 8
+let D_shifted=V(D) + 6
+let S1_shifted=V(S1) + 4
+let S0_shifted=V(S0) + 2
+plot v(Vout) A_shifted B_shifted C_shifted D_shifted S1_shifted S0_shifted
+.endc
 .end
