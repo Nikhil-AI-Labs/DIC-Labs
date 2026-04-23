@@ -1,0 +1,53 @@
+* 90nm_cmos_inverter_static_power_U24EC016
+* Lab 8: Static Power Analysis of CMOS Inverter
+* Tool: NGSpice
+*
+* Static (leakage) power is measured via a DC sweep of the input voltage.
+* The power curve peaks near Vdd/2 (both transistors partially ON → short-circuit current).
+* This produces the characteristic bell-shaped power curve seen in the lab output.
+
+.title 90nm_cmos_inverter_static_power_U24EC016
+
+.include cmos_65nm.txt
+
+* --- Supply ---
+Vdd vdd 0 1.2
+
+* --- DC sweep source on input ---
+Vin in 0 DC 0
+
+* --- CMOS Inverter ---
+* Drain Gate Source Bulk ModelName W L
+mp1 out in vdd vdd pmos W=1u L=90nm
+mn1 out in 0   0   nmos W=500n L=90nm
+
+* --- Load capacitance (small, for DC it has no effect but matches circuit) ---
+CL out 0 10f
+
+* --- DC Sweep: sweep Vin from 0 to 1.2V in 1mV steps ---
+.dc Vin 0 1.2 1m
+
+* --- Control Block ---
+.control
+  set color0 = white
+  set color1 = black
+  set xbrushwidth = 3
+  run
+
+  * Static power = Vdd * |I(Vdd)|
+  * During DC sweep: at midpoint (Vin ~ Vdd/2) both transistors partially conduct,
+  * causing the short-circuit (crowbar) current and the bell-shaped power peak.
+  let pwr = v(vdd) * (-i(Vdd))
+
+  * Transfer characteristic: Vout vs Vin
+  plot v(out) vs v(in) title 'CMOS Inverter: DC Transfer Characteristic (Vout vs Vin)'
+
+  * Static power curve: pwr vs Vin — produces the bell-shaped curve in output image
+  plot pwr vs v(in) title 'Static Power vs Input Voltage (Bell Curve)'
+
+  * Supply current vs Vin
+  plot (-i(Vdd)) vs v(in) title 'Supply Current vs Input Voltage'
+
+.endc
+
+.end

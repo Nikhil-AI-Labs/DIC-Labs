@@ -1,0 +1,54 @@
+* 90nm_cmos_inverter_dynamic_power_U24EC016
+* Lab 8: Dynamic Power Analysis of CMOS Inverter
+* Tool: NGSpice
+
+.title 90nm_cmos_inverter_dynamic_power_U24EC016
+
+.include cmos_65nm.txt
+
+* --- Supply ---
+Vdd vdd 0 1.2
+
+* --- Input clock pulse ---
+* PULSE(V1 V2 Td Tr Tf Pw Period)
+Vin in 0 PULSE(0 1.2 0ns 0.1ns 0.1ns 5ns 10ns)
+
+* --- CMOS Inverter (PMOS + NMOS) ---
+* Drain Gate Source Bulk ModelName W L
+mp1 out in vdd vdd pmos W=1u L=90nm
+mn1 out in 0   0   nmos W=500n L=90nm
+
+* --- Load capacitance ---
+CL out 0 10f
+
+* --- Transient Analysis ---
+* Simulate for 100ns with 10ps step to capture ~10 switching cycles
+.tran 0.1ns 50ns
+
+* --- Control Block ---
+.control
+  set color0 = white
+  set color1 = black
+  set xbrushwidth = 3
+  run
+
+  * Instantaneous power drawn from supply:  P = Vdd * (-I(Vdd))
+  * (NGSpice convention: current into positive terminal of Vdd is negative)
+  let power  = v(vdd) * (-i(Vdd))
+  let p_stat = v(vdd) * i(Vdd)
+
+  * Average dynamic power over steady-state window
+  meas tran p_avg AVG power from=5ns to=95ns
+
+  * Plot input and output waveforms
+  plot v(in) v(out) title 'CMOS Inverter: Input & Output (Dynamic)'
+
+  * Plot instantaneous power (spikes = dynamic, near-zero = static)
+  plot power title 'Instantaneous Power (Dynamic Spikes)'
+
+  * Plot supply current
+  plot i(Vdd) title 'Supply Current i(Vdd)'
+
+.endc
+
+.end
