@@ -1,0 +1,43 @@
+* ECL NOT Gate with Emitter Follower Output
+* Correct ECL output: HIGH~-0.7V, LOW~-1.8V
+
+.title ECL_NOT_Gate
+
+.model Qa NPN (BF=100)
+
+* Differential pair
+Q1 c1 b1 e Qa
+Q2 c2 vb e Qa
+
+* Emitter follower output stage (fixes output swing to proper ECL levels)
+Q3 0 c1 not_out Qa
+
+* Collector load resistors
+R1 c1 0 300
+R2 c2 0 200
+
+* Emitter resistors
+Re     e       vee 1k
+Rf     not_out vee 1500
+
+* Power supply
+VEE vee 0 -5.2
+
+* Reference voltage (note: source named Vref, node named vb - avoids name clash)
+Vref vb 0 -1.3
+
+* Input: ECL pulse LOW=-1.8V HIGH=-0.8V
+Vin b1 0 PULSE(-1.8 -0.8 0n 0.1n 0.1n 4n 8n)
+
+.tran 0.1n 20n
+
+.control
+set color0 = white
+set color1 = black
+set xbrushwidth = 3
+set hcopydevtype = svg
+run
+plot v(b1) v(not_out)
+.endc
+
+.end
